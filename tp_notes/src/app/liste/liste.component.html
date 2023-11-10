@@ -1,0 +1,5 @@
+<ul *ngIf="_shared.show == true">
+    <div *ngFor="let item of _shared.notes " [ngStyle]="{'color' : item.color}">
+        <li>{{item.text}}</li>
+    </div>
+</ul>
