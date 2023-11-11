@@ -1,0 +1,23 @@
+<div style="padding-top: 70px;">
+    <div class="container">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let dog of dogs">
+                    <td align="center">{{dog.id}}</td>
+                    <td align="center">{{dog.name}}</td>
+                    <td align="center">
+                        <button class="btn btn-info" (click)="showDetails = true; getDogById(dog.id)"><i class="fa fa-eye"></i>View</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <app-dog-details *ngIf="showDetails" [dog]="selectedDog"></app-dog-details>
+    </div>
+</div>
