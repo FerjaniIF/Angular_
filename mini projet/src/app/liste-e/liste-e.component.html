@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- --- flatpickr --- -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <meta charset="UTF-8">
+  <title >Absence Tracker</title>
+  <!-- Bootstrap CSS and js -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <!-- custom CSS -->
+  <link href="liste-e.component.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <!-- ------ Search ----- -->
+        <form class="navbar-search navbar-search-dark form-inline d-none d-md-flex ml-0">
+          <div class="form-group mb-0" [ngClass]="{ 'focused': focus === true }">
+            <div class="input-group input-group-alternative">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-transparent border-0 mt-3"><i class="fas fa-search"></i></span>
+              </div>
+              <input class="form-control border-0 rounded-pill mt-2" placeholder="Search" type="text" (focus)="focus = true"> 
+            </div>
+          </div>
+        </form>
+        <!-- --- end Search ---- -->
+        <a class="navbar-brand text-center" href="#" style="width: 100%; font-size:larger;"><h3><b>Absence Tracker</b></h3></a>
+        <!-- ----- dropdown ------- -->
+        <ul class="navbar-nav align-items-center d-none d-md-flex">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span>
+                <img class="rounded-circle" alt="Image placeholder" src="assets/img/ad1.png" width="30px">
+              </span>
+              Admin
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#"><img src="assets/img/run.png" width="20px"> <button class="btn" routerLink="login" style="margin-left: 10px;">Logout</button> </a></li>
+            </ul>
+          </li>
+        </ul>
+        
+      </div>
+    </nav>
+  </header>
+
+  <!-- ---- tableau ----- -->
+  <main class="container mt-4">
+    <div class="row">
+      <div class="col-md-8">
+        <div> 
+          <div class="d-flex justify-content-end">
+              <button (click)="clickAddEtud()" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-sm  ms-auto rounded-circle"><img class="rounded-circle" src="assets/img/add1.jfif" width="40px" alt=""></button>
+          </div>
+      
+          <div id="listeEtud">
+            <h3> Liste des Absences </h3>
+            <br>
+            <table class="table table-hover" >
+              <thead>
+                  <tr align="center">
+                      <th scope="col">Nom Enseignant</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Nom Etudiant</th>
+                      <th scope="col">Classe</th>
+                      <th scope="col">Matiere</th>
+                      <th scope="col">Date et Horaire </th>
+                      <th scope="col">Absences</th>
+                      <th scope="col">Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr align="center" *ngFor="let e of absData">
+                      <td>{{e.ename}}</td>
+                      <td>{{e.eemail}}</td>
+                      <td>{{e.etudname}}</td>
+                      <td>{{e.etudclasse}}</td>
+                      <td>{{e.matiere}}</td>
+                      <td>{{e.absdatetime}}</td>
+                      <td>{{e.absences}}</td>
+                      <td>
+                          <a href="#!" class="btn btn-sm p-1" style="width: auto; height: auto; overflow: hidden;" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="onEdit(e)">
+                              <img class="rounded-circle" src="assets/img/edit1.png" width="25" height="25" style="display: block; max-width: 100%; height: auto; margin: 0;">
+                          </a>
+                          
+                          <button class="btn btn-sm p-1" style="width: auto; height: auto; overflow: hidden;" (click)="delEtudiant(e)">
+                              <img class="rounded-circle" src="assets/img/del.png" width="25" height="25" style="display: block; max-width: 100%; height: auto; margin: 0;">
+                          </button>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+          </div>
+      </div>
+      <!-- ---- fin tableau ----- -->
+      
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+              
+              <!-- form -->
+              <form [formGroup]="formValue">
+                  <div class="form-group m-2">
+                    <label>Nom Enseignant</label>
+                    <input type="text" class="form-control mt-1" formControlName="ename">
+                    <br>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">&#64;</span>
+                      <input type="text" class="form-control mt-1" formControlName="eemail" placeholder="Email" aria-describedby="basic-addon1">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-group m-2">
+                    <label>Nom Etudiant</label>
+                    <input type="text" class="form-control mt-1" formControlName="etudname">
+                  </div>
+                  <br>
+                  <div class="form-group m-2">
+                    <label>Classe</label>
+                    <input type="text" class="form-control mt-1" formControlName="etudclasse">
+                  </div>
+                  <br>
+                  <div class="form-group m-2">
+                    <label>Matiere</label>
+                    <input type="text" class="form-control mt-1" formControlName="matiere">
+                  </div>
+                  <br>
+                  <div class="form-group">
+                      <label for="datetimepicker">Date et Horaire</label>
+                      <input type="text" class="form-control mt-1" #absdatetime formControlName="absdatetime" name="datetimepicker">
+                  </div>
+                  <br>          
+                  <div class="form-group d-flex align-items-end">
+                      <label for="absences" style="margin-right: 10px; margin-bottom: 10px;">Nombre d'absences</label>
+                      <input type="number" class="form-control" style="width: 100px; margin-top: 10px;" formControlName="absences">
+                  </div>
+                </form>
+                <!-- fin form -->
+      
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="postEtudDetails()"  *ngIf="showAdd">Ajouter</button>
+                <button type="button" class="btn btn-success" (click)="updateEtudiant()" *ngIf="showUpd">Mis a jour</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel">Annuler</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <!-- --- pdf --- -->
+        <button type="button" class="btn btn-info" (click)="convertToPDF()">Imprimer</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+      <span class="text-muted">© 2023 Absence Tracking</span>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS and any custom JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>
+
+  

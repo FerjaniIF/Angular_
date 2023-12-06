@@ -1,0 +1,30 @@
+/* styles.css */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #c6e6f9;
+  }
+  
+  header {
+    margin-bottom: 20px;
+  }
+  
+  main {
+    flex: 1 0 auto;
+  }
+  
+  .footer {
+    text-align: center;
+  }
+
+.table thead tr th{
+    background-color:rgba(245, 245, 245, 0.927);
+}
+
+.table tbody tr td{
+    background-color:rgba(249, 241, 231, 0.694);
+}
